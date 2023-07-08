@@ -8,6 +8,8 @@
 #include "Engine/EngineTypes.h"
 #include "InteractionQueueComponent.generated.h"
 
+class UAnimMontage;
+
 DECLARE_LOG_CATEGORY_CLASS(LogInteractionQueueComponent, Display, Display)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionSignature, AActor*, TargetActor);
@@ -64,7 +66,7 @@ public:
 	 * Call it if FinishManually == false.
 	 */
 	UFUNCTION()
-	bool FinishInteraction(AActor* Actor);
+	bool FinishInteraction();
 
 	/** Stops interaction.*/
 	UFUNCTION(BlueprintCallable, Category="TrickyInteractionSystem")
@@ -102,7 +104,12 @@ public:
 	UFUNCTION(BlueprintPure, Category="TrickyInteractionSystem")
 	bool UpdateInteractionTime(const AActor* Actor, float NewTime);
 
+	void SetFinishManually(const bool Value) { bFinishManually = Value; }
+
 private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Interaction", meta=(AllowPrivateAccess))
+	TObjectPtr<UAnimMontage> InteractionMontage = nullptr;
+	
 	/** If true, the FinishInteraction() must be called manually.*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Interaction", meta=(AllowPrivateAccess))
 	bool bFinishManually = false;
@@ -167,4 +174,7 @@ private:
 	void FinishInteractionWrapper(AActor* Actor);
 
 	bool IsInteractionTimerActive() const;
+
+	UPROPERTY()
+	AActor* TargetActor = nullptr;
 };

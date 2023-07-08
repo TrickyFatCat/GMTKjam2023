@@ -40,6 +40,5 @@ protected:
 		Category="Pickup")
 	FInteractionData InteractionData;
 
-private:
 	virtual bool FinishInteraction_Implementation(AActor* OtherActor) override;
 };

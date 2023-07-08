@@ -13,6 +13,8 @@ class UCameraComponent;
 class UInteractionQueueComponent;
 class UHitPointsComponent;
 class UMimicHandlerComponent;
+class UStaticMesh;
+class USkeletalMesh;
 
 UCLASS()
 class GMTKJAM2023_API APlayerCharacter : public ACharacter
@@ -31,11 +33,17 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float LureRotationSpeed = 50.f;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArm = nullptr;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> Camera = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UStaticMeshComponent> Lure = nullptr;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UInteractionQueueComponent> InteractionQueue = nullptr;
@@ -54,13 +62,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractAction = nullptr;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* AttackAction = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* MimicAction = nullptr;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* PauseAction = nullptr;
 
@@ -78,4 +86,13 @@ protected:
 
 	UFUNCTION()
 	void Attack();
+
+	UFUNCTION()
+	void HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh);
+
+	UFUNCTION()
+	void HandleInteractionFinish(AActor* TargetActor);
+
+	UFUNCTION()
+	void ToggleInput(const bool bIsEnabled);
 };
