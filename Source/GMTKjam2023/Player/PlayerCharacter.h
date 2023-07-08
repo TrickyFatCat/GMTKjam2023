@@ -30,20 +30,20 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
-	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+protected:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArm = nullptr;
 
-	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> Camera = nullptr;
 
-	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UInteractionQueueComponent> InteractionQueue = nullptr;
 
-	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UHitPointsComponent> HitPoints = nullptr;
 
-	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UMimicHandlerComponent> MimicHandler = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
