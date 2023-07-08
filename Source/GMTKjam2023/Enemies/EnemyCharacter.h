@@ -9,6 +9,7 @@
 class UHitPointsComponent;
 class UEnemyPatrolManager;
 class UEnemyPlayerHandler;
+class UAttackComponent;
 
 UCLASS()
 class GMTKJAM2023_API AEnemyCharacter : public ACharacter
@@ -33,4 +34,7 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UEnemyPlayerHandler> PlayerHandler = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UAttackComponent> AttackComponent = nullptr;
 };
