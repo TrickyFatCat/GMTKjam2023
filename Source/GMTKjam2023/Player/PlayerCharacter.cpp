@@ -30,6 +30,7 @@ APlayerCharacter::APlayerCharacter()
 	Lure->SetupAttachment(GetMesh());
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
+	InteractionQueue->SetFinishManually(true);
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 	MimicHandler = CreateDefaultSubobject<UMimicHandlerComponent>("MimicHandler");
 }

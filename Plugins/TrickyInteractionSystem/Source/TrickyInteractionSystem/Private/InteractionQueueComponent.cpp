@@ -7,6 +7,7 @@
 #include "InteractionInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "TimerManager.h"
+#include "GameFramework/Character.h"
 
 UInteractionQueueComponent::UInteractionQueueComponent()
 {
@@ -68,21 +69,21 @@ bool UInteractionQueueComponent::StartInteraction()
 
 	FInteractionData InteractionData;
 	GetFirstInteractionData(InteractionData);
-	AActor* Actor = GetFirstActor();
+	TargetActor = GetFirstActor();
 
-	if (!IsValid(Actor))
+	if (!IsValid(TargetActor))
 	{
 		return false;
 	}
 
-	if (!UInteractionLibrary::HasInteractionInterface(Actor))
+	if (!UInteractionLibrary::HasInteractionInterface(TargetActor))
 	{
 		LogWarning(FString::Printf(TEXT("Actor %s doesn't have InteractionInterface implemented."),
-		                           *Actor->GetClass()->GetName()));
+		                           *TargetActor->GetClass()->GetName()));
 		return false;
 	}
 
-	if (InteractionData.bRequireLineOfSight && Actor != ActorInSight)
+	if (InteractionData.bRequireLineOfSight && TargetActor != ActorInSight)
 	{
 		return false;
 	}
@@ -92,34 +93,48 @@ bool UInteractionQueueComponent::StartInteraction()
 		return StartInteractionTimer(InteractionQueue[0]);
 	}
 
-	OnInteractionStarted.Broadcast(Actor);
-	IInteractionInterface::Execute_StartInteraction(Actor, GetOwner());
+	OnInteractionStarted.Broadcast(TargetActor);
+	IInteractionInterface::Execute_StartInteraction(TargetActor, GetOwner());
 
-	return bFinishManually ? true : FinishInteraction(GetFirstActor());
+
+	if (bFinishManually)
+	{
+		if (!InteractionMontage)
+		{
+			return false;
+		}
+
+		ACharacter* Character = Cast<ACharacter>(GetOwner());
+
+		if (!Character)
+		{
+			return false;
+		}
+
+		Character->PlayAnimMontage(InteractionMontage);
+		return true;
+	}
+
+	return FinishInteraction();
 }
 
-bool UInteractionQueueComponent::FinishInteraction(AActor* Actor)
+bool UInteractionQueueComponent::FinishInteraction()
 {
 	bool bResult = false;
 
-	if (!QueueHasActor(Actor))
-	{
-		return bResult;
-	}
-
 	FInteractionData InteractionData;
-	GetInteractionData(Actor, InteractionData);
+	GetInteractionData(TargetActor, InteractionData);
 
-	if (InteractionData.bRequireLineOfSight && Actor != ActorInSight)
+	if (InteractionData.bRequireLineOfSight && TargetActor != ActorInSight)
 	{
 		return bResult;
 	}
 
-	bResult = IInteractionInterface::Execute_FinishInteraction(Actor, GetOwner());
+	bResult = IInteractionInterface::Execute_FinishInteraction(TargetActor, GetOwner());
 
 	if (bResult)
 	{
-		OnInteractionFinishedSignature.Broadcast(Actor);
+		OnInteractionFinishedSignature.Broadcast(TargetActor);
 		return bResult;
 	}
 
@@ -251,7 +266,7 @@ void UInteractionQueueComponent::SortByWeight()
 	auto PredicateWeight = [&](const FQueueData& Data_A, const FQueueData& Data_B)
 	{
 		return Data_A.InteractionData.SortWeight >= Data_B.InteractionData.SortWeight &&
-				Data_A.InteractionData.bRequireLineOfSight <= Data_B.InteractionData.bRequireLineOfSight;
+			Data_A.InteractionData.bRequireLineOfSight <= Data_B.InteractionData.bRequireLineOfSight;
 	};
 
 	InteractionQueue.Sort(PredicateWeight);
@@ -387,7 +402,7 @@ bool UInteractionQueueComponent::StartInteractionTimer(const FQueueData& QueueDa
 
 void UInteractionQueueComponent::FinishInteractionWrapper(AActor* Actor)
 {
-	FinishInteraction(Actor);
+	FinishInteraction();
 }
 
 bool UInteractionQueueComponent::IsInteractionTimerActive() const
