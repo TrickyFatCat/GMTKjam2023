@@ -27,7 +27,7 @@ APlayerCharacter::APlayerCharacter()
 	Camera->bUsePawnControlRotation = false;
 
 	Lure = CreateDefaultSubobject<UStaticMeshComponent>("Lure");
-	Lure->SetupAttachment(GetMesh());
+	Lure->SetupAttachment(GetRootComponent());
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 	InteractionQueue->SetFinishManually(true);
@@ -54,6 +54,8 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Lure->AddLocalRotation(FRotator{0.f, LureRotationSpeed * DeltaTime, 0.f});
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

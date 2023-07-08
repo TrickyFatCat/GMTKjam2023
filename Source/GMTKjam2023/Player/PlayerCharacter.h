@@ -33,6 +33,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float LureRotationSpeed = 50.f;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArm = nullptr;
 
