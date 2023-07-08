@@ -16,11 +16,11 @@ UEnemyPlayerHandler::UEnemyPlayerHandler()
 }
 
 void UEnemyPlayerHandler::TickComponent(float DeltaTime, ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction)
+                                        FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-в	bIsInAttackRadius = GetOwner()->GetDistanceTo(PlayerCharacter) <= AttackDistance;
+	bIsInAttackRadius = GetOwner()->GetDistanceTo(PlayerCharacter) <= AttackDistance;
 
 	if (BlackboardComponent)
 	{
@@ -41,7 +41,7 @@ void UEnemyPlayerHandler::BeginPlay()
 	}
 
 	AAIController* Controller = Cast<AAIController>(GetOwner()->GetInstigatorController());
-	
+
 	if (Controller)
 	{
 		BlackboardComponent = Controller->GetBlackboardComponent();
