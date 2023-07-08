@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInteractionQueueComponent;
 class UHitPointsComponent;
+class UMimicHandlerComponent;
 
 UCLASS()
 class GMTKJAM2023_API APlayerCharacter : public ACharacter
@@ -41,6 +42,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	TObjectPtr<UHitPointsComponent> HitPoints = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	TObjectPtr<UMimicHandlerComponent> MimicHandler = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* MappingContext = nullptr;

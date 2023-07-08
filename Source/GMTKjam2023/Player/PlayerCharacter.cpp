@@ -10,6 +10,7 @@
 #include "InteractionQueueComponent.h"
 #include "TrickyGameModeLibrary.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
+#include "GMTKjam2023/Components/MimicHandlerComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -26,6 +27,7 @@ APlayerCharacter::APlayerCharacter()
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
+	MimicHandler = CreateDefaultSubobject<UMimicHandlerComponent>("MimicHandler");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -100,6 +102,12 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::ToggleMimicing()
 {
+	if (!MimicHandler->GetCanMimic())
+	{
+		return;
+	}
+
+	MimicHandler->GetIsMimicing() ? MimicHandler->DisableMimicing() : MimicHandler->EnableMimicing();
 }
 
 void APlayerCharacter::Attack()
