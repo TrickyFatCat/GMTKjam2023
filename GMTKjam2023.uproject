@@ -199,6 +199,50 @@
 		{
 			"Name": "ChaosClothEditor",
 			"Enabled": false
+		},
+		{
+			"Name": "TrickyKeyringSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyAnimationComponents",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyButtons",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyInteractionSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyDoors",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyEntityResources",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyGameMode",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyPickups",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyUserInterface",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyStatusEffects",
+			"Enabled": true
+		},
+		{
+			"Name": "TrickyLevelHelpers",
+			"Enabled": true
 		}
 	]
 }
