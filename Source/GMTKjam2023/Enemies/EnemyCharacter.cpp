@@ -4,6 +4,7 @@
 #include "EnemyCharacter.h"
 
 #include "GMTKjam2023/Components/EnemyPatrolManager.h"
+#include "GMTKjam2023/Components/EnemyPlayerHandler.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
 
 
@@ -13,6 +14,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 	PatrolManager = CreateDefaultSubobject<UEnemyPatrolManager>("PatrolManager");
+	PlayerHandler = CreateDefaultSubobject<UEnemyPlayerHandler>("PlayerHandler");
 }
 
 void AEnemyCharacter::BeginPlay()
