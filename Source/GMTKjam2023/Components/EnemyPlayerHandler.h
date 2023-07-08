@@ -8,6 +8,7 @@
 
 class APlayerCharacter;
 class UMimicHandlerComponent;
+class UBlackboardComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTKJAM2023_API UEnemyPlayerHandler : public UActorComponent
@@ -16,6 +17,8 @@ class GMTKJAM2023_API UEnemyPlayerHandler : public UActorComponent
 
 public:
 	UEnemyPlayerHandler();
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	APlayerCharacter* GetPlayerCharacter() const { return PlayerCharacter; }
 
@@ -32,4 +35,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName PlayerActorKeyName = "PlayerActor";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FName CanAttackKeyName = "CanAttack";
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float AttackDistance = 50.f;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
+	bool bIsInAttackRadius = false;
+
+	UPROPERTY()
+	UBlackboardComponent* BlackboardComponent = nullptr;
 };

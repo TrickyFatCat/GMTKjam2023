@@ -15,6 +15,19 @@ UEnemyPlayerHandler::UEnemyPlayerHandler()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UEnemyPlayerHandler::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+в	bIsInAttackRadius = GetOwner()->GetDistanceTo(PlayerCharacter) <= AttackDistance;
+
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->SetValueAsBool(CanAttackKeyName, bIsInAttackRadius);
+	}
+}
+
 
 void UEnemyPlayerHandler::BeginPlay()
 {
@@ -28,9 +41,10 @@ void UEnemyPlayerHandler::BeginPlay()
 	}
 
 	AAIController* Controller = Cast<AAIController>(GetOwner()->GetInstigatorController());
-
+	
 	if (Controller)
 	{
-		Controller->GetBlackboardComponent()->SetValueAsObject(PlayerActorKeyName, PlayerCharacter);
+		BlackboardComponent = Controller->GetBlackboardComponent();
+		BlackboardComponent->SetValueAsObject(PlayerActorKeyName, PlayerCharacter);
 	}
 }
