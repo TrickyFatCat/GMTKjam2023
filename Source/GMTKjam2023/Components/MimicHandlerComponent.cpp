@@ -39,7 +39,7 @@ bool UMimicHandlerComponent::EnableMimicing()
 	}
 
 	bIsMimicing = true;
-	OnMimicToggled.Broadcast(ChestMesh, nullptr);
+	OnMimicToggled.Broadcast(ChestMesh, LureMesh);
 	return true;
 }
 
