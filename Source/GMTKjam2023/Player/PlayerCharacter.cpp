@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InteractionQueueComponent.h"
 #include "TrickyGameModeLibrary.h"
+#include "GMTKjam2023/Components/HitPointsComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -24,6 +25,7 @@ APlayerCharacter::APlayerCharacter()
 	Camera->bUsePawnControlRotation = false;
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
+	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 }
 
 void APlayerCharacter::BeginPlay()
