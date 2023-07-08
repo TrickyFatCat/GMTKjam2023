@@ -32,7 +32,7 @@ public:
 
 private:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	bool bCanMimic = false;
+	bool bCanMimic = true;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintGetter = GetIsMimicing)
 	bool bIsMimicing = false;
