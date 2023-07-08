@@ -26,17 +26,8 @@ APlayerCharacter::APlayerCharacter()
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
 
-	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
-	Body->SetupAttachment(GetRootComponent());
-
-	LidAnchor = CreateDefaultSubobject<UStaticMeshComponent>("LidAnchor");
-	LidAnchor->SetupAttachment(Body);
-
-	Lid = CreateDefaultSubobject<UStaticMeshComponent>("Lid");
-	Lid->SetupAttachment(LidAnchor);
-
 	Lure = CreateDefaultSubobject<UStaticMeshComponent>("Lure");
-	Lure->SetupAttachment(Body);
+	Lure->SetupAttachment(GetMesh());
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
@@ -129,10 +120,9 @@ void APlayerCharacter::Attack()
 {
 }
 
-void APlayerCharacter::HandleMimicing(UStaticMesh* BodyMesh, UStaticMesh* LidMesh, UStaticMesh* LureMesh)
+void APlayerCharacter::HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh)
 {
-	Body->SetStaticMesh(BodyMesh);
-	Lid->SetStaticMesh(LidMesh);
+	GetMesh()->SetSkeletalMesh(NewMesh, false);
 	Lure->SetStaticMesh(LureMesh);
 
 	if (MimicHandler->GetIsMimicing())

@@ -13,8 +13,8 @@ class UCameraComponent;
 class UInteractionQueueComponent;
 class UHitPointsComponent;
 class UMimicHandlerComponent;
-class UStaticMeshComponent;
-class USceneComponent;
+class UStaticMesh;
+class USkeletalMesh;
 
 UCLASS()
 class GMTKJAM2023_API APlayerCharacter : public ACharacter
@@ -38,15 +38,6 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> Camera = nullptr;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
-	TObjectPtr<UStaticMeshComponent> Body = nullptr;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
-	TObjectPtr<USceneComponent> LidAnchor = nullptr;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
-	TObjectPtr<UStaticMeshComponent> Lid = nullptr;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> Lure = nullptr;
@@ -94,5 +85,5 @@ protected:
 	void Attack();
 
 	UFUNCTION()
-	void HandleMimicing(UStaticMesh* BodyMesh, UStaticMesh* LidMesh, UStaticMesh* LureMesh);
+	void HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh);
 };

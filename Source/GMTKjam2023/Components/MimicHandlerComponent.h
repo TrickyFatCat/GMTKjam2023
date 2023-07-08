@@ -6,9 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "MimicHandlerComponent.generated.h"
 
-class UStaticMesh;
+class USkeletalMesh;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnMimicToggledSignature, UStaticMesh*, BodyMesh, UStaticMesh*, LidMesh, UStaticMesh*, LureMesh);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMimicToggledSignature, USkeletalMesh*, NewMesh, UStaticMesh*, LureMesh);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTKJAM2023_API UMimicHandlerComponent : public UActorComponent
@@ -44,17 +44,11 @@ private:
 	bool bIsMimicing = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UStaticMesh> DefaultBody = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UStaticMesh> DefaultLid = nullptr;
+	TObjectPtr<USkeletalMesh> MimicMesh = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UStaticMesh> MimicBody = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	TObjectPtr<UStaticMesh> MimicLid = nullptr;
-
+	TObjectPtr<USkeletalMesh> ChestMesh = nullptr;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, AdvancedDisplay, meta=(AllowPrivateAccess))
 	float WallCheckDistance = 256.f;
 };

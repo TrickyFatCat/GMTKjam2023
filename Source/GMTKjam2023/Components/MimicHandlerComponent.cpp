@@ -39,7 +39,7 @@ bool UMimicHandlerComponent::EnableMimicing()
 	}
 
 	bIsMimicing = true;
-	OnMimicToggled.Broadcast(MimicBody, MimicLid, nullptr);
+	OnMimicToggled.Broadcast(ChestMesh, nullptr);
 	return true;
 }
 
@@ -51,6 +51,6 @@ bool UMimicHandlerComponent::DisableMimicing()
 	}
 
 	bIsMimicing = false;
-	OnMimicToggled.Broadcast(DefaultBody, DefaultLid, nullptr);
+	OnMimicToggled.Broadcast(MimicMesh,nullptr);
 	return true;
 }
