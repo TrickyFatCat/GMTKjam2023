@@ -3,6 +3,7 @@
 
 #include "EnemyCharacter.h"
 
+#include "GMTKjam2023/Components/EnemyPatrolManager.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
 
 
@@ -11,6 +12,7 @@ AEnemyCharacter::AEnemyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
+	PatrolManager = CreateDefaultSubobject<UEnemyPatrolManager>("PatrolManager");
 }
 
 void AEnemyCharacter::BeginPlay()

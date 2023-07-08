@@ -7,6 +7,7 @@
 #include "EnemyCharacter.generated.h"
 
 class UHitPointsComponent;
+class UEnemyPatrolManager;
 
 UCLASS()
 class GMTKJAM2023_API AEnemyCharacter : public ACharacter
@@ -25,4 +26,7 @@ public:
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	TObjectPtr<UHitPointsComponent> HitPoints = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	TObjectPtr<UEnemyPatrolManager> PatrolManager = nullptr;
 };
