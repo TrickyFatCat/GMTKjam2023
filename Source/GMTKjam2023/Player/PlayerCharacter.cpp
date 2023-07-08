@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InteractionQueueComponent.h"
+#include "TrickyGameModeBase.h"
 #include "TrickyGameModeLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
@@ -50,6 +51,7 @@ void APlayerCharacter::BeginPlay()
 
 	MimicHandler->OnMimicToggled.AddDynamic(this, &APlayerCharacter::HandleMimicing);
 	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
+	HitPoints->OnValueZero.AddDynamic(this, &APlayerCharacter::HandleGameOver);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -158,4 +160,9 @@ void APlayerCharacter::ToggleInput(const bool bIsEnabled)
 	{
 		bIsEnabled ? EnableInput(PlayerController) : DisableInput(PlayerController);
 	}
+}
+
+void APlayerCharacter::HandleGameOver()
+{
+	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(false);
 }

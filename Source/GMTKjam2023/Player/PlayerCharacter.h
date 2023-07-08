@@ -95,4 +95,7 @@ protected:
 
 	UFUNCTION()
 	void ToggleInput(const bool bIsEnabled);
+
+	UFUNCTION()
+	void HandleGameOver();
 };
