@@ -23,6 +23,7 @@ bool UMimicHandlerComponent::EnableMimicing()
 	}
 
 	bIsMimicing = true;
+	return true;
 }
 
 bool UMimicHandlerComponent::DisableMimicing()
@@ -33,4 +34,5 @@ bool UMimicHandlerComponent::DisableMimicing()
 	}
 
 	bIsMimicing = false;
+	return true;
 }
