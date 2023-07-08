@@ -22,6 +22,22 @@ bool UMimicHandlerComponent::EnableMimicing()
 		return false;
 	}
 
+	FHitResult HitResult;
+	AActor* Actor = GetOwner();
+	const FVector TraceStart = Actor->GetActorLocation();
+	const FVector TraceEnd = TraceStart + Actor->GetActorForwardVector() * WallCheckDistance;
+
+	GetWorld()->LineTraceSingleByChannel(HitResult,
+	                                     TraceStart,
+	                                     TraceEnd,
+	                                     ECC_Visibility);
+
+	if (HitResult.IsValidBlockingHit())
+	{
+		
+		Actor->SetActorRotation(HitResult.ImpactNormal.Rotation());
+	}
+
 	bIsMimicing = true;
 	OnMimicToggled.Broadcast(MimicBody, MimicLid, nullptr);
 	return true;

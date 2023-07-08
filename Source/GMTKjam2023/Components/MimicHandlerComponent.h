@@ -54,4 +54,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	TObjectPtr<UStaticMesh> MimicLid = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, AdvancedDisplay, meta=(AllowPrivateAccess))
+	float WallCheckDistance = 256.f;
 };
