@@ -2,9 +2,12 @@
 
 
 #include "EnemyController.h"
+#include "Navigation/CrowdFollowingComponent.h"
 
 
-AEnemyController::AEnemyController()
+AEnemyController::AEnemyController(const FObjectInitializer& ObjectInitializer) :
+	Super(ObjectInitializer.SetDefaultSubobjectClass<UCrowdFollowingComponent>(TEXT("PathFollowingComponent")))
+
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -15,9 +18,3 @@ void AEnemyController::BeginPlay()
 
 	RunBehaviorTree(BehaviorTree);
 }
-
-void AEnemyController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
