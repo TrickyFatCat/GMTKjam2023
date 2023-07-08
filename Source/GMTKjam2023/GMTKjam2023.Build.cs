@@ -15,7 +15,8 @@ public class GMTKjam2023 : ModuleRules
 			"EnhancedInput",
 			"TrickyGameMode",
 			"TrickyInteractionSystem",
-			"TrickyEntityResources"
+			"TrickyEntityResources",
+			"TrickyPickups"
 		});
 
 		// Uncomment if you are using Slate UI
