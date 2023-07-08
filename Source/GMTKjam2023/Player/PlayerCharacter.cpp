@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InteractionQueueComponent.h"
 #include "TrickyGameModeLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
 #include "GMTKjam2023/Components/MimicHandlerComponent.h"
 
@@ -19,11 +20,23 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetupAttachment(GetRootComponent());
-	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->bUsePawnControlRotation = false;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
+
+	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
+	Body->SetupAttachment(GetRootComponent());
+
+	LidAnchor = CreateDefaultSubobject<UStaticMeshComponent>("LidAnchor");
+	LidAnchor->SetupAttachment(Body);
+
+	Lid = CreateDefaultSubobject<UStaticMeshComponent>("Lid");
+	Lid->SetupAttachment(LidAnchor);
+
+	Lure = CreateDefaultSubobject<UStaticMeshComponent>("Lure");
+	Lure->SetupAttachment(Body);
 
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
@@ -42,6 +55,8 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}
+
+	MimicHandler->OnMimicToggled.AddDynamic(this, &APlayerCharacter::HandleMimicing);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -112,4 +127,20 @@ void APlayerCharacter::ToggleMimicing()
 
 void APlayerCharacter::Attack()
 {
+}
+
+void APlayerCharacter::HandleMimicing(UStaticMesh* BodyMesh, UStaticMesh* LidMesh, UStaticMesh* LureMesh)
+{
+	Body->SetStaticMesh(BodyMesh);
+	Lid->SetStaticMesh(LidMesh);
+	Lure->SetStaticMesh(LureMesh);
+
+	if (MimicHandler->GetIsMimicing())
+	{
+		GetCharacterMovement()->DisableMovement();
+	}
+	else
+	{
+		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	}
 }

@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "MimicHandlerComponent.generated.h"
 
+class UStaticMesh;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnMimicToggledSignature, UStaticMesh*, BodyMesh, UStaticMesh*, LidMesh, UStaticMesh*, LureMesh);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTKJAM2023_API UMimicHandlerComponent : public UActorComponent
@@ -15,6 +18,9 @@ class GMTKJAM2023_API UMimicHandlerComponent : public UActorComponent
 public:
 	UMimicHandlerComponent();
 
+	UPROPERTY(BlueprintAssignable)
+	FOnMimicToggledSignature OnMimicToggled;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -22,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool EnableMimicing();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	bool DisableMimicing();
 
 	bool GetCanMimic() const { return bCanMimic; }
@@ -36,4 +42,16 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintGetter = GetIsMimicing)
 	bool bIsMimicing = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
+	TObjectPtr<UStaticMesh> DefaultBody = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
+	TObjectPtr<UStaticMesh> DefaultLid = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
+	TObjectPtr<UStaticMesh> MimicBody = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
+	TObjectPtr<UStaticMesh> MimicLid = nullptr;
 };

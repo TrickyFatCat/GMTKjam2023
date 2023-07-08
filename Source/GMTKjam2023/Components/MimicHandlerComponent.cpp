@@ -23,6 +23,7 @@ bool UMimicHandlerComponent::EnableMimicing()
 	}
 
 	bIsMimicing = true;
+	OnMimicToggled.Broadcast(MimicBody, MimicLid, nullptr);
 	return true;
 }
 
@@ -34,5 +35,6 @@ bool UMimicHandlerComponent::DisableMimicing()
 	}
 
 	bIsMimicing = false;
+	OnMimicToggled.Broadcast(DefaultBody, DefaultLid, nullptr);
 	return true;
 }
