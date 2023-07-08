@@ -5,9 +5,9 @@
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "TrickyPlayerControllerBase.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "InteractionQueueComponent.h"
 #include "TrickyGameModeLibrary.h"
 
 
@@ -22,6 +22,8 @@ APlayerCharacter::APlayerCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
+
+	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -52,6 +54,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 
+		//Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Interact);
+
 		//Mimic
 		EnhancedInputComponent->BindAction(MimicAction,
 		                                   ETriggerEvent::Triggered,
@@ -59,7 +64,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		                                   &APlayerCharacter::ToggleMimicing);
 
 		//Attack
-		EnhancedInputComponent->BindAction(ThrowAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Attack);
 
 		//Pause
 		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::TogglePause);
@@ -84,6 +89,11 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
+}
+
+void APlayerCharacter::Interact()
+{
+	InteractionQueue->StartInteraction();
 }
 
 void APlayerCharacter::ToggleMimicing()
