@@ -4,3 +4,13 @@
 
 #include "CoreMinimal.h"
 
+UENUM(BlueprintType)
+enum class ELureType : uint8
+{
+	Gold,
+	Food,
+	Potion,
+	Weapon,
+	Book,
+	None
+};

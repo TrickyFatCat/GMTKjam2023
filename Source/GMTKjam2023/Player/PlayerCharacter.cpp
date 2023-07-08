@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InteractionQueueComponent.h"
 #include "TrickyGameModeLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
 #include "GMTKjam2023/Components/MimicHandlerComponent.h"
 
@@ -19,13 +20,17 @@ APlayerCharacter::APlayerCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetupAttachment(GetRootComponent());
-	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->bUsePawnControlRotation = false;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
 
+	Lure = CreateDefaultSubobject<UStaticMeshComponent>("Lure");
+	Lure->SetupAttachment(GetRootComponent());
+
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
+	InteractionQueue->SetFinishManually(true);
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 	MimicHandler = CreateDefaultSubobject<UMimicHandlerComponent>("MimicHandler");
 }
@@ -42,11 +47,16 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}
+
+	MimicHandler->OnMimicToggled.AddDynamic(this, &APlayerCharacter::HandleMimicing);
+	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Lure->AddLocalRotation(FRotator{0.f, LureRotationSpeed * DeltaTime, 0.f});
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -97,6 +107,12 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Interact()
 {
+	if (MimicHandler->GetIsMimicing())
+	{
+		return;
+	}
+
+	ToggleInput(false);
 	InteractionQueue->StartInteraction();
 }
 
@@ -112,4 +128,34 @@ void APlayerCharacter::ToggleMimicing()
 
 void APlayerCharacter::Attack()
 {
+}
+
+void APlayerCharacter::HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh)
+{
+	GetMesh()->SetSkeletalMesh(NewMesh, false);
+	Lure->SetStaticMesh(LureMesh);
+
+	if (MimicHandler->GetIsMimicing())
+	{
+		GetCharacterMovement()->DisableMovement();
+	}
+	else
+	{
+		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	}
+}
+
+void APlayerCharacter::HandleInteractionFinish(AActor* TargetActor)
+{
+	ToggleInput(true);
+}
+
+void APlayerCharacter::ToggleInput(const bool bIsEnabled)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController)
+	{
+		bIsEnabled ? EnableInput(PlayerController) : DisableInput(PlayerController);
+	}
 }
