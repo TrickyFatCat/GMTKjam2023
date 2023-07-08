@@ -33,8 +33,13 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void GetNextPointLocation(FVector& Location);
+	bool GetPatrolLocation(FVector& Location);
+
+	UFUNCTION(BlueprintCallable)
+	void CalculateNextPatrolPoint();
 
 private:
 	int32 CurrentIndex = 0;
+
+	int32 PingPontDirection = 1;
 };
