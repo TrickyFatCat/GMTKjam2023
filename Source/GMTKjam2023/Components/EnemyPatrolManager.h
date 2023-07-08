@@ -31,6 +31,12 @@ protected:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
 	EPatrolType PatrolType = EPatrolType::PingPong;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FName WaitKeyName = NAME_None;
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
+	float WaitDuration = 3.f;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	bool GetPatrolLocation(FVector& Location);

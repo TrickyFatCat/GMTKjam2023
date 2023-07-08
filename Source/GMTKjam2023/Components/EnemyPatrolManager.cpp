@@ -3,6 +3,8 @@
 
 #include "EnemyPatrolManager.h"
 
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetArrayLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -15,6 +17,13 @@ UEnemyPatrolManager::UEnemyPatrolManager()
 void UEnemyPatrolManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AAIController* Controller = Cast<AAIController>(GetOwner()->GetInstigatorController());
+
+	if (Controller)
+	{
+		Controller->GetBlackboardComponent()->SetValueAsFloat(WaitKeyName, WaitDuration);
+	}
 }
 
 bool UEnemyPatrolManager::GetPatrolLocation(FVector& Location)
