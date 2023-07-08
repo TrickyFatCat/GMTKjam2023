@@ -31,7 +31,7 @@ public:
 	bool GetIsMimicing() const { return bIsMimicing; }
 
 private:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	bool bCanMimic = false;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintGetter = GetIsMimicing)
