@@ -59,11 +59,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 
 		//Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 
 		//Mimic
 		EnhancedInputComponent->BindAction(MimicAction,
-		                                   ETriggerEvent::Triggered,
+		                                   ETriggerEvent::Started,
 		                                   this,
 		                                   &APlayerCharacter::ToggleMimicing);
 
