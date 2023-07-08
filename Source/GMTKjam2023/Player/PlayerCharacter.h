@@ -89,4 +89,10 @@ protected:
 
 	UFUNCTION()
 	void HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh);
+
+	UFUNCTION()
+	void HandleInteractionFinish(AActor* TargetActor);
+
+	UFUNCTION()
+	void ToggleInput(const bool bIsEnabled);
 };

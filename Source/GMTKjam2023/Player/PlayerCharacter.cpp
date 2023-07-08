@@ -49,6 +49,7 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	MimicHandler->OnMimicToggled.AddDynamic(this, &APlayerCharacter::HandleMimicing);
+	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -106,6 +107,12 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Interact()
 {
+	if (MimicHandler->GetIsMimicing())
+	{
+		return;
+	}
+
+	ToggleInput(false);
 	InteractionQueue->StartInteraction();
 }
 
@@ -135,5 +142,20 @@ void APlayerCharacter::HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureM
 	else
 	{
 		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	}
+}
+
+void APlayerCharacter::HandleInteractionFinish(AActor* TargetActor)
+{
+	ToggleInput(true);
+}
+
+void APlayerCharacter::ToggleInput(const bool bIsEnabled)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController)
+	{
+		bIsEnabled ? EnableInput(PlayerController) : DisableInput(PlayerController);
 	}
 }
