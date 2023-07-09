@@ -26,7 +26,11 @@ EBTNodeResult::Type UBTTask_StartIndulging::ExecuteTask(UBehaviorTreeComponent& 
 
 	if (DesireComponent->IndulgeDuration > 0)
 	{
-		DesireComponent->OnIndulgeFinished.AddDynamic(this, &UBTTask_StartIndulging::OnAnimationTimerDone);
+		if (!DesireComponent->OnIndulgeFinished.IsAlreadyBound(this, &UBTTask_StartIndulging::OnAnimationTimerDone))
+		{
+			DesireComponent->OnIndulgeFinished.AddDynamic(this, &UBTTask_StartIndulging::OnAnimationTimerDone);
+		}
+		
 		DesireComponent->StartIndulging();
 		return EBTNodeResult::InProgress;
 	}
@@ -44,7 +48,7 @@ EBTNodeResult::Type UBTTask_StartIndulging::AbortTask(UBehaviorTreeComponent& Ow
 	{
 		return EBTNodeResult::Failed;
 	}
-
+	
 	DesireComponent->StopIndulging();
 	return EBTNodeResult::Aborted;
 }
