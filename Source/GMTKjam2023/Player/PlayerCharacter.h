@@ -16,6 +16,9 @@ class UHitPointsComponent;
 class UMimicHandlerComponent;
 class UStaticMesh;
 class USkeletalMesh;
+class UAttackComponent;
+class UMeleeHitBox;
+class UEnemyCounterComponent;
 
 UCLASS()
 class GMTKJAM2023_API APlayerCharacter : public ACharacter
@@ -55,6 +58,15 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UMimicHandlerComponent> MimicHandler = nullptr;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UAttackComponent> AttackComponent = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UMeleeHitBox> MeleeHitBox = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UEnemyCounterComponent> EnemyCounterComponent = nullptr;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* MappingContext = nullptr;
 
@@ -102,4 +114,7 @@ protected:
 
 	UFUNCTION()
 	void HandleLureChange(ELureType NewLure);
+
+	UFUNCTION()
+	void HandleEnemyNumberDecreased(int32 NewValue, int32 Amount);
 };

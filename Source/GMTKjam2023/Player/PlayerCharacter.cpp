@@ -11,7 +11,10 @@
 #include "TrickyGameModeBase.h"
 #include "TrickyGameModeLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GMTKjam2023/Components/AttackComponent.h"
+#include "GMTKjam2023/Components/EnemyCounterComponent.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
+#include "GMTKjam2023/Components/MeleeHitBox.h"
 #include "GMTKjam2023/Components/MimicHandlerComponent.h"
 
 
@@ -30,10 +33,15 @@ APlayerCharacter::APlayerCharacter()
 	Lure = CreateDefaultSubobject<UStaticMeshComponent>("Lure");
 	Lure->SetupAttachment(GetRootComponent());
 
+	MeleeHitBox = CreateDefaultSubobject<UMeleeHitBox>("MeleeHitBox");
+	MeleeHitBox->SetupAttachment(GetRootComponent());
+
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 	InteractionQueue->SetFinishManually(true);
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 	MimicHandler = CreateDefaultSubobject<UMimicHandlerComponent>("MimicHandler");
+	AttackComponent = CreateDefaultSubobject<UAttackComponent>("AttackComponent");
+	EnemyCounterComponent = CreateDefaultSubobject<UEnemyCounterComponent>("EnemyCounter");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -53,6 +61,7 @@ void APlayerCharacter::BeginPlay()
 	MimicHandler->OnLureChanged.AddDynamic(this, &APlayerCharacter::HandleLureChange);
 	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
 	HitPoints->OnValueZero.AddDynamic(this, &APlayerCharacter::HandleGameOver);
+	EnemyCounterComponent->OnValueDecreased.AddDynamic(this, &APlayerCharacter::HandleEnemyNumberDecreased);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -81,7 +90,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		                                   &APlayerCharacter::ToggleMimicing);
 
 		//Attack
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &APlayerCharacter::Attack);
 
 		//Pause
 		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::TogglePause);
@@ -133,6 +142,13 @@ void APlayerCharacter::ToggleMimicing()
 
 void APlayerCharacter::Attack()
 {
+	if (!MimicHandler->GetIsMimicing() || MimicHandler->GetLureType() == ELureType::None)
+	{
+		return;
+	}
+
+	AttackComponent->StartAttack();
+	MimicHandler->SetLureType(ELureType::None);
 }
 
 void APlayerCharacter::HandleMimicing(USkeletalMesh* NewMesh, UStaticMesh* LureMesh)
@@ -167,6 +183,7 @@ void APlayerCharacter::ToggleInput(const bool bIsEnabled)
 
 void APlayerCharacter::HandleGameOver()
 {
+	GetMovementComponent()->StopMovementImmediately();
 	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(false);
 }
 
@@ -178,4 +195,15 @@ void APlayerCharacter::HandleLureChange(ELureType NewLure)
 	}
 	
 	Lure->SetStaticMesh(MimicHandler->GetLureMesh(NewLure));
+}
+
+void APlayerCharacter::HandleEnemyNumberDecreased(int32 NewValue, int32 Amount)
+{
+	if (NewValue != 0)
+	{
+		return;
+	}
+
+	GetMovementComponent()->StopMovementImmediately();
+	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(true);
 }

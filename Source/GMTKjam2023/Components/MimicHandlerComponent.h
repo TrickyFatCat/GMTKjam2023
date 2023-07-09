@@ -43,6 +43,8 @@ public:
 	UFUNCTION(BlueprintGetter)
 	bool GetIsMimicing() const { return bIsMimicing; }
 
+	ELureType GetLureType() const { return LureType; }
+
 	UFUNCTION(BlueprintCallable)
 	void SetLureType(ELureType Value);
 
