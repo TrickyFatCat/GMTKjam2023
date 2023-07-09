@@ -114,8 +114,10 @@ void APlayerCharacter::Interact()
 		return;
 	}
 
-	ToggleInput(false);
-	InteractionQueue->StartInteraction();
+	if (InteractionQueue->StartInteraction())
+	{
+		ToggleInput(false);
+	}
 }
 
 void APlayerCharacter::ToggleMimicing()
