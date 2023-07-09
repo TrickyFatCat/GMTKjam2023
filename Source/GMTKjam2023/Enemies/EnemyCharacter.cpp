@@ -10,6 +10,7 @@
 #include "ProceduralMeshComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GMTKjam2023/Components/EnemyDesireComponent.h"
+#include "Perception/PawnSensingComponent.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -21,6 +22,7 @@ AEnemyCharacter::AEnemyCharacter()
 	PlayerHandler = CreateDefaultSubobject<UEnemyPlayerHandler>("PlayerHandler");
 	AttackComponent = CreateDefaultSubobject<UAttackComponent>("AttackComponent");
 	EnemyDesireComponent = CreateDefaultSubobject<UEnemyDesireComponent>("DesireComponent");
+	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensing");
 	
 	FieldOfViewMesh = CreateDefaultSubobject<UProceduralMeshComponent>("FOVMesh");
 	FieldOfViewMesh->SetupAttachment(GetRootComponent());

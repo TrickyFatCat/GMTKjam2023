@@ -13,6 +13,7 @@ class UAttackComponent;
 class UProceduralMeshComponent;
 class UEnemyDesireComponent;
 class UWidgetComponent;
+class UPawnSensingComponent;
 
 UCLASS()
 class GMTKJAM2023_API AEnemyCharacter : public ACharacter
@@ -49,4 +50,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UWidgetComponent> EnemyBubbleWidget = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UPawnSensingComponent> PawnSensingComponent = nullptr;
 };
