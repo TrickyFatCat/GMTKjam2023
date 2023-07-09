@@ -168,3 +168,7 @@ void APlayerCharacter::HandleGameOver()
 {
 	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(false);
 }
+
+void APlayerCharacter::HandleLureChange(ELureType NewLure)
+{
+}
