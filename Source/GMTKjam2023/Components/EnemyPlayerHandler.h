@@ -9,6 +9,7 @@
 class APlayerCharacter;
 class UMimicHandlerComponent;
 class UBlackboardComponent;
+class UEnemyCounterComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTKJAM2023_API UEnemyPlayerHandler : public UActorComponent
@@ -24,6 +25,8 @@ public:
 
 	UMimicHandlerComponent* GetMimicHandler() const { return MimicHandler; }
 
+	UEnemyCounterComponent* GetEnemyCounter() const { return EnemyCounter; }	
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -33,6 +36,9 @@ protected:
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
 	UMimicHandlerComponent* MimicHandler = nullptr;
 
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
+	UEnemyCounterComponent* EnemyCounter = nullptr;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName PlayerActorKeyName = "PlayerActor";
 

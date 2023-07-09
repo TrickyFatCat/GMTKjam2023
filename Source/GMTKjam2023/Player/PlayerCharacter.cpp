@@ -12,6 +12,7 @@
 #include "TrickyGameModeLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GMTKjam2023/Components/AttackComponent.h"
+#include "GMTKjam2023/Components/EnemyCounterComponent.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
 #include "GMTKjam2023/Components/MeleeHitBox.h"
 #include "GMTKjam2023/Components/MimicHandlerComponent.h"
@@ -40,6 +41,7 @@ APlayerCharacter::APlayerCharacter()
 	HitPoints = CreateDefaultSubobject<UHitPointsComponent>("HitPoints");
 	MimicHandler = CreateDefaultSubobject<UMimicHandlerComponent>("MimicHandler");
 	AttackComponent = CreateDefaultSubobject<UAttackComponent>("AttackComponent");
+	EnemyCounterComponent = CreateDefaultSubobject<UEnemyCounterComponent>("EnemyCounter");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -180,6 +182,7 @@ void APlayerCharacter::ToggleInput(const bool bIsEnabled)
 
 void APlayerCharacter::HandleGameOver()
 {
+	GetMovementComponent()->StopMovementImmediately();
 	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(false);
 }
 
@@ -191,4 +194,15 @@ void APlayerCharacter::HandleLureChange(ELureType NewLure)
 	}
 	
 	Lure->SetStaticMesh(MimicHandler->GetLureMesh(NewLure));
+}
+
+void APlayerCharacter::HandleEnemyNumberDecreased(int32 NewValue, int32 Amount)
+{
+	if (NewValue != 0)
+	{
+		return;
+	}
+
+	GetMovementComponent()->StopMovementImmediately();
+	UTrickyGameModeLibrary::GetTrickyGameMode(this)->FinishSession(true);
 }
