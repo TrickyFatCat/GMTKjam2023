@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GMTKjam2023/GMTKjam2023.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -98,4 +99,7 @@ protected:
 
 	UFUNCTION()
 	void HandleGameOver();
+
+	UFUNCTION()
+	void HandleLureChange(ELureType NewLure);
 };
