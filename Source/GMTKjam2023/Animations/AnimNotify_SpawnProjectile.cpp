@@ -9,6 +9,10 @@ void UAnimNotify_SpawnProjectile::Notify(USkeletalMeshComponent* MeshComp,
                                          UAnimSequenceBase* Animation,
                                          const FAnimNotifyEventReference& EventReference)
 {
+	if (!MeshComp->GetWorld())
+	{
+		return;
+	}
 	if (!ProjectileClass)
 	{
 		return;
@@ -17,6 +21,6 @@ void UAnimNotify_SpawnProjectile::Notify(USkeletalMeshComponent* MeshComp,
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(MeshComp->GetSocketLocation(SpawnSocketName));
 	SpawnTransform.SetRotation(FQuat(MeshComp->GetOwner()->GetActorForwardVector().Rotation()));
-	GetWorld()->SpawnActor<AProjectileBase>(ProjectileClass, SpawnTransform);
+	MeshComp->GetWorld()->SpawnActor<AProjectileBase>(ProjectileClass, SpawnTransform);
 	Super::Notify(MeshComp, Animation, EventReference);
 }
