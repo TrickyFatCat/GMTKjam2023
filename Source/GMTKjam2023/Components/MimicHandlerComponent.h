@@ -42,16 +42,17 @@ public:
 	UFUNCTION(BlueprintGetter)
 	bool GetIsMimicing() const { return bIsMimicing; }
 
+	UFUNCTION(BlueprintCallable)
 	void SetLureType(ELureType Value);
 
-private:
+protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	bool bCanMimic = true;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintGetter = GetIsMimicing)
 	bool bIsMimicing = false;
 
-	UPROPERTY(VisibleAnywhere, meta=(AllowPrivateAccess))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	ELureType LureType = ELureType::None;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
