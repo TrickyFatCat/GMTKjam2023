@@ -61,6 +61,7 @@ void APlayerCharacter::BeginPlay()
 	MimicHandler->OnLureChanged.AddDynamic(this, &APlayerCharacter::HandleLureChange);
 	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
 	HitPoints->OnValueZero.AddDynamic(this, &APlayerCharacter::HandleGameOver);
+	EnemyCounterComponent->OnValueDecreased.AddDynamic(this, &APlayerCharacter::HandleEnemyNumberDecreased);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
