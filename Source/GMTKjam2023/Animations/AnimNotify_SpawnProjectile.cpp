@@ -9,7 +9,7 @@ void UAnimNotify_SpawnProjectile::Notify(USkeletalMeshComponent* MeshComp,
                                          UAnimSequenceBase* Animation,
                                          const FAnimNotifyEventReference& EventReference)
 {
-	if (!MeshComp->GetWorld())
+	if (!MeshComp->GetWorld() || !MeshComp->GetOwner())
 	{
 		return;
 	}
