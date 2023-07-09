@@ -10,6 +10,7 @@ class UHitPointsComponent;
 class UEnemyPatrolManager;
 class UEnemyPlayerHandler;
 class UAttackComponent;
+class UProceduralMeshComponent;
 
 UCLASS()
 class GMTKJAM2023_API AEnemyCharacter : public ACharacter
@@ -37,4 +38,7 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UAttackComponent> AttackComponent = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UProceduralMeshComponent> FieldOfViewMesh = nullptr;
 };

@@ -2,11 +2,13 @@
 
 
 #include "EnemyCharacter.h"
+#include "EnemyCharacter.h"
 
 #include "GMTKjam2023/Components/AttackComponent.h"
 #include "GMTKjam2023/Components/EnemyPatrolManager.h"
 #include "GMTKjam2023/Components/EnemyPlayerHandler.h"
 #include "GMTKjam2023/Components/HitPointsComponent.h"
+#include "ProceduralMeshComponent.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -17,6 +19,9 @@ AEnemyCharacter::AEnemyCharacter()
 	PatrolManager = CreateDefaultSubobject<UEnemyPatrolManager>("PatrolManager");
 	PlayerHandler = CreateDefaultSubobject<UEnemyPlayerHandler>("PlayerHandler");
 	AttackComponent = CreateDefaultSubobject<UAttackComponent>("AttackComponent");
+	
+	FieldOfViewMesh = CreateDefaultSubobject<UProceduralMeshComponent>("FOVMesh");
+	FieldOfViewMesh->SetupAttachment(GetRootComponent());
 }
 
 void AEnemyCharacter::BeginPlay()

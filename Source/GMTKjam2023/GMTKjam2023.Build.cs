@@ -15,7 +15,8 @@ public class GMTKjam2023 : ModuleRules
 			"InputCore",
 			"UMG",
 			"AIModule" ,
-			"GameplayTasks"
+			"GameplayTasks",
+			"ProceduralMeshComponent"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
