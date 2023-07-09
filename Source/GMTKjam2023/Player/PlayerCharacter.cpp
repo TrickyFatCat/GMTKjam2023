@@ -50,6 +50,7 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	MimicHandler->OnMimicToggled.AddDynamic(this, &APlayerCharacter::HandleMimicing);
+	MimicHandler->OnLureChanged.AddDynamic(this, &APlayerCharacter::HandleLureChange);
 	InteractionQueue->OnInteractionFinishedSignature.AddDynamic(this, &APlayerCharacter::HandleInteractionFinish);
 	HitPoints->OnValueZero.AddDynamic(this, &APlayerCharacter::HandleGameOver);
 }
@@ -171,4 +172,10 @@ void APlayerCharacter::HandleGameOver()
 
 void APlayerCharacter::HandleLureChange(ELureType NewLure)
 {
+	if (!MimicHandler->GetIsMimicing())
+	{
+		return;
+	}
+	
+	Lure->SetStaticMesh(MimicHandler->GetLureMesh(NewLure));
 }

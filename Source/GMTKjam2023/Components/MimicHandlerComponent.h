@@ -11,6 +11,7 @@ class USkeletalMesh;
 class UStaticMesh;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMimicToggledSignature, USkeletalMesh*, NewMesh, UStaticMesh*, LureMesh);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLureChangedSignature, ELureType, LureType);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -23,7 +24,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnMimicToggledSignature OnMimicToggled;
-	
+
 	UPROPERTY(BlueprintAssignable)
 	FOnLureChangedSignature OnLureChanged;
 
@@ -38,12 +39,15 @@ public:
 	bool DisableMimicing();
 
 	bool GetCanMimic() const { return bCanMimic; }
-	
+
 	UFUNCTION(BlueprintGetter)
 	bool GetIsMimicing() const { return bIsMimicing; }
 
 	UFUNCTION(BlueprintCallable)
 	void SetLureType(ELureType Value);
+
+	UFUNCTION()
+	UStaticMesh* GetLureMesh(ELureType Lure) { return LureMeshes[Lure]; }
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
@@ -57,13 +61,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	TObjectPtr<USkeletalMesh> MimicMesh = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	TObjectPtr<USkeletalMesh> ChestMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess))
 	TMap<ELureType, UStaticMesh*> LureMeshes;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, AdvancedDisplay, meta=(AllowPrivateAccess))
 	float WallCheckDistance = 256.f;
 };
