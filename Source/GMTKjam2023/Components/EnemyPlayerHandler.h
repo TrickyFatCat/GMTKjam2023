@@ -47,4 +47,7 @@ protected:
 
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent = nullptr;
+
+	UFUNCTION()
+	void HandlePlayerDeath();
 };

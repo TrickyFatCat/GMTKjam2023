@@ -4,6 +4,9 @@
 #include "EnemyPlayerHandler.h"
 
 #include "AIController.h"
+#include "BrainComponent.h"
+#include "EnemyPatrolManager.h"
+#include "HitPointsComponent.h"
 #include "MimicHandlerComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GMTKjam2023/Player/PlayerCharacter.h"
@@ -38,6 +41,13 @@ void UEnemyPlayerHandler::BeginPlay()
 	if (PlayerCharacter)
 	{
 		MimicHandler = PlayerCharacter->FindComponentByClass<UMimicHandlerComponent>();
+
+		UHitPointsComponent* HitPointsComponent = PlayerCharacter->FindComponentByClass<UHitPointsComponent>();
+
+		if (HitPointsComponent)
+		{
+			HitPointsComponent->OnValueZero.AddDynamic(this, &UEnemyPlayerHandler::HandlePlayerDeath);
+		}
 	}
 
 	AAIController* Controller = Cast<AAIController>(GetOwner()->GetInstigatorController());
@@ -46,5 +56,15 @@ void UEnemyPlayerHandler::BeginPlay()
 	{
 		BlackboardComponent = Controller->GetBlackboardComponent();
 		BlackboardComponent->SetValueAsObject(PlayerActorKeyName, PlayerCharacter);
+	}
+}
+
+void UEnemyPlayerHandler::HandlePlayerDeath()
+{
+	AAIController* Controller = Cast<AAIController>(GetOwner()->GetInstigatorController());
+
+	if (Controller)
+	{
+		Controller->GetBrainComponent()->StopLogic("PlayerDeath");
 	}
 }
