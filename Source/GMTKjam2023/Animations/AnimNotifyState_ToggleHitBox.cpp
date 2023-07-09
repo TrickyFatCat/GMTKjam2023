@@ -13,7 +13,7 @@ void UAnimNotifyState_ToggleHitBox::NotifyBegin(USkeletalMeshComponent* MeshComp
 	if (HitBox)
 	{
 		HitBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-		HitBox->SetHiddenInGame(false);
+		// HitBox->SetHiddenInGame(false);
 	}
 	
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
@@ -25,7 +25,7 @@ void UAnimNotifyState_ToggleHitBox::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 	if (HitBox)
 	{
 		HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		HitBox->SetHiddenInGame(true);
+		// HitBox->SetHiddenInGame(true);
 	}
 	Super::NotifyEnd(MeshComp, Animation, EventReference);
 }
