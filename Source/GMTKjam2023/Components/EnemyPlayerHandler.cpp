@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "BrainComponent.h"
+#include "EnemyCounterComponent.h"
 #include "EnemyPatrolManager.h"
 #include "HitPointsComponent.h"
 #include "MimicHandlerComponent.h"
@@ -47,6 +48,13 @@ void UEnemyPlayerHandler::BeginPlay()
 		if (HitPointsComponent)
 		{
 			HitPointsComponent->OnValueZero.AddDynamic(this, &UEnemyPlayerHandler::HandlePlayerDeath);
+		}
+
+		EnemyCounter = PlayerCharacter->FindComponentByClass<UEnemyCounterComponent>();
+
+		if (EnemyCounter)
+		{
+			EnemyCounter->IncreaseMaxValue(1, true);
 		}
 	}
 
