@@ -28,7 +28,7 @@ bool USimpleEntityResource::DecreaseValue(const int32 Amount)
 
 bool USimpleEntityResource::IncreaseValue(const int32 Amount, bool bClampToMax)
 {
-	if (Amount <= 0 || ResourceData.Value >= ResourceData.MaxValue && bClampToMax)
+	if (Amount <= 0 || (ResourceData.Value >= ResourceData.MaxValue && bClampToMax))
 	{
 		return false;
 	}

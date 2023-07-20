@@ -707,7 +707,7 @@ float USplineAnimationComponent::CalculateDistance(const float Progress) const
 	const float Position = GetPositionAtSpline(CurrentPointIndex, NextPointIndex, Progress);
 	float Distance = FMath::Fmod(Position + SplineOffset, SplineComponent->GetSplineLength());
 
-	if (Distance < 0.f || Distance <= 0.f && Position > 0.f)
+	if (Distance < 0.f || (Distance <= 0.f && Position > 0.f))
 	{
 		Distance = SplineComponent->GetSplineLength() + Distance;
 	}

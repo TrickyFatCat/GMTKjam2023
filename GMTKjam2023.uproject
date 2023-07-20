@@ -244,5 +244,9 @@
 			"Name": "TrickyLevelHelpers",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Linux",
+		"Windows"
 	]
 }
